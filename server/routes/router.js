@@ -1,9 +1,20 @@
 const router = require("express").Router();
+const getInfo = require('../stores_api/amazon');
 
 router.post("/amazon", async (req, res) => {
-    const data = req.body;
-    res.json({receivedData: data});
+    const { item, category } = req.body;
+
+    // console.log("item and category: ", item, " ", category);
+
+    getInfo(item, category)
+    .then((data) => {
+        console.log(data);
+        res.send(data);
+    })
+    .catch((err) => {
+        res.status(500).send("Encountered an unexpected error while getting the data");
+        console.log("Got error: ", err);
+    })
 });
 
-// Export the router so it can be used in the server.js file
 module.exports = router;
