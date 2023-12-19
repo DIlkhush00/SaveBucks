@@ -4,7 +4,7 @@ const getInfo = require('../stores_api/amazon');
 router.post("/amazon", async (req, res) => {
     const { item, category } = req.body;
 
-    // console.log("item and category: ", item, " ", category);
+    console.log("item and category: ", item, " ", category);
 
     getInfo(item, category)
     .then((data) => {

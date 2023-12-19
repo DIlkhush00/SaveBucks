@@ -57,9 +57,15 @@ const getData = ($, index) => {
 
 
 const getInfo = async (item, cat) => {
+    console.log("item: ", item, " cat: ", cat);
+
+    if(item == undefined) return [];
+
     const $ = await load(item, cat);
     const limit = 5;
     let data = [];
+
+    if($ == null) return data;
 
     for(let i = 0; i < limit; i++)
     {

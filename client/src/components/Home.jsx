@@ -2,11 +2,6 @@ import { Typography } from '@mui/material'
 import SearchBar from './SearchBar'
 import Box from '@mui/material/Box';
 
-
-const handleSearch = (searchTerm) => {
-    console.log('Search term:', searchTerm);
-};
-
 function Home()
 {
     return (
@@ -22,7 +17,7 @@ function Home()
         }}>
             <Typography variant='h2'>Save Bucks</Typography>
             <Typography variant='h4'>Save your Bucks</Typography>
-            <SearchBar onSearch={handleSearch}/>
+            <SearchBar />
             
         </Box>
     )
