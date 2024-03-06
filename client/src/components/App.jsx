@@ -1,10 +1,9 @@
-import SearchBar from "./Home/SearchBar"
 import { useState } from 'react';
-import { Container, AppBar, Toolbar, Typography, IconButton, Paper } from '@mui/material'
+import { Container, AppBar, Toolbar, Button, IconButton, Paper, Box } from '@mui/material'
 import { Brightness4, Brightness7 } from '@mui/icons-material'
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-
+import AppRoutes from './AppRoutes';
 
 const App = () => {
     const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -13,7 +12,7 @@ const App = () => {
         palette: {
             mode: darkMode ? 'dark' : 'light',
             primary: {
-                main: darkMode ? '#424242' : '#fff', // Random dark mode color
+                main: darkMode ? '#121212' : '#fffff', // Random dark mode color
             },
         },
     });
@@ -23,28 +22,30 @@ const App = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <Paper elevation={0} square={true} sx={{ height: '100vh' }}>
-                <Container className="App"
-                    sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        height: '100%'
-                    }}>
+            <Paper elevation={0} square={true} sx={{ pb: 10, pt: 10, minHeight: '100vh' }}>
+                <Container className="App">
                     <AppBar position="fixed"
                         sx={{
                             background: 'transparent',
-                            boxShadow: 'none'
+                            boxShadow: 'none',
                         }}>
-                        <Toolbar>
-                            <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                        <Toolbar sx={{
+                            display: 'flex',
+                            justifyContent: 'space-between'
+                        }}>
+                            <Button href='/' variant="h5" >
                                 SaveBucks
-                            </Typography>
+                            </Button>
                             <IconButton onClick={handleDarkModeToggle} color="inherit">
                                 {darkMode ? <Brightness7 /> : <Brightness4 />}
                             </IconButton>
                         </Toolbar>
                     </AppBar>
-                    <SearchBar />
+                    <Box sx={{
+                        paddingTop: 4
+                    }}>
+                        <AppRoutes />
+                    </Box>
                 </Container>
             </Paper>
         </ThemeProvider>
