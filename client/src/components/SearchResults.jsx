@@ -16,22 +16,23 @@ const SearchResults = () => {
 
     useEffect(() => {
         // Load cached data on component mount
-        const cachedData = localStorage.getItem(query);
-        if (cachedData) {
-            setData(JSON.parse(cachedData));
-        }
+       // const cachedData = localStorage.getItem(query);
+       // if (cachedData) {
+       //     setData(JSON.parse(cachedData));
+       // }
 
         const getData = async () => {
             try {
                 setLoading(true);
-                const cachedData = localStorage.getItem(query);
+                //  const cachedData = localStorage.getItem(query);
+                const cachedData = false;
                 if (cachedData) {
                     // Use cached data if available
                     setData(JSON.parse(cachedData));
                     setLoading(false);
                 } else {
                     const category = 'stripbooks';
-                    
+                    // http://api.savebucks.co/api/amazon
                     // http://localhost:3000/api/amazon
                     const response = await fetch('http://localhost:3000/api/amazon', {
                         method: 'POST',
@@ -47,7 +48,7 @@ const SearchResults = () => {
                     console.log(result);
 
                     // Save data to localStorage for caching
-                    localStorage.setItem(query, JSON.stringify(result));
+                    //  localStorage.setItem(query, JSON.stringify(result));
 
                     setData(result);
                     setLoading(false);
@@ -82,7 +83,7 @@ const SearchResults = () => {
                             />
                         </Box>
                     )
-                    : (data==null && !loading) ? (<Typography variant='h5'>No book found. Try something else</Typography>) : (<>Looks like something's wrong. Please try again after a coffee break</>)
+                    : ((data == null || data == undefined) && !loading) ? (<Typography variant='h5'>No book found. Try something else</Typography>) : (<>Looks like something's wrong. Please try again after a coffee break</>)
             }
         </Container>
     )

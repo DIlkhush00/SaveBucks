@@ -21,6 +21,12 @@ const Product = ({ product, index }) => {
                     {product.title}
                 </Typography>
                 <Typography variant="subtitle1" color="text.secondary" component="div">
+                    by {product.authorName}
+                </Typography>
+                <Typography variant="subtitle1" color="text.secondary" component="div">
+                    Type: {product.type}
+                </Typography>
+                <Typography variant="subtitle1" color="text.secondary" component="div">
                     Price: {product.price}
                 </Typography>
                 <Button sx={{width: '100%'}} target='_blank' variant="outlined" color="success" href={"https://amazon.in" + product.productURL} >View</Button>

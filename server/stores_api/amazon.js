@@ -40,7 +40,15 @@ const getData = ($, index) => {
     // For product title
     let titleSelector = `${common} h2.a-size-mini a > span`;
     let title =  $(titleSelector).text().replace(/\s+/g, ' ').trim();
-    obj['title'] = title;
+    obj['title'] = title !== undefined ? title : '';
+
+    // For author (if product is a book)
+    let authorSelector = `${common} div.a-color-secondary > div.a-row > .a-size-base:not(.a-color-secondary):is(span, a)`;
+    let elements = $(authorSelector).filter((index, element) => {
+        return !($(element).is('span') && $(element).index() === $(element).parent().children('.a-size-base').index($(element).parent().children('.a-size-base').filter('span').first()));
+    });
+    let author = $(elements).text();
+    obj['authorName'] = author !== undefined ? author : '';
 
     // For product URL
     let URLSelector = `${common} h2.a-size-mini > a`;
@@ -48,9 +56,18 @@ const getData = ($, index) => {
     obj['productURL'] = productURL !== undefined ? productURL : '';
 
     // For product price
-    let price = $(`${common} .a-price-symbol:first`).text().replace(/\s+/g, ' ') +
-                $(`${common} .a-price-whole:first`).text().replace(/\s+/g, ' ');
-    obj['price'] = price.trim();
+    // let price = $(`${common} .a-price-symbol:first`).text().replace(/\s+/g, ' ') +
+    //             $(`${common} .a-price-whole:first`).text().replace(/\s+/g, ' ');
+    // obj['price'] = price.trim();
+
+    let priceSelector = `${common} div.puisg-col-inner > div[data-cy="price-recipe"] .a-row span.a-price > span.a-offscreen`;
+    let price = $(priceSelector).first().text();
+    obj['price'] = price !== undefined ? price : '';
+
+    // Type of product
+    let typeSelector = `${common} div.puisg-col-inner > div[data-cy="price-recipe"] > .a-row:first-of-type > a`
+    let type = $(typeSelector).text();
+    obj['type'] = type !== undefined ? type : '';
 
     return obj;
 };
