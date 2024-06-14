@@ -1,7 +1,7 @@
 const cheerio = require('cheerio');
 const axios = require('axios');
 
-const load = async (item, cat = '') => {
+const load_az = async (item, cat = '') => {
 
     const proto = "https://www.";
     const domain = "amazon";
@@ -27,7 +27,7 @@ const load = async (item, cat = '') => {
 
 }
 
-const getData = ($, index) => {
+const getData_az = ($, index) => {
     let obj = {};
         
     let common = 'div.s-result-item[data-component-type="s-search-result"]:eq('+ index +')';
@@ -55,11 +55,7 @@ const getData = ($, index) => {
     let productURL = $(URLSelector).attr('href');
     obj['productURL'] = productURL !== undefined ? productURL : '';
 
-    // For product price
-    // let price = $(`${common} .a-price-symbol:first`).text().replace(/\s+/g, ' ') +
-    //             $(`${common} .a-price-whole:first`).text().replace(/\s+/g, ' ');
-    // obj['price'] = price.trim();
-
+    // For Product Price
     let priceSelector = `${common} div.puisg-col-inner > div[data-cy="price-recipe"] .a-row span.a-price > span.a-offscreen`;
     let price = $(priceSelector).first().text();
     obj['price'] = price !== undefined ? price : '';
@@ -69,28 +65,34 @@ const getData = ($, index) => {
     let type = $(typeSelector).text();
     obj['type'] = type !== undefined ? type : '';
 
+    // Source
+    obj['source'] = 'Amazon';
+
+    // Extra
+    obj['extra'] = '';
+
     return obj;
 };
 
 
-const getInfo = async (item, cat) => {
+const getInfo_az = async (item, cat) => {
     console.log("item: ", item, " cat: ", cat);
 
     if(item == undefined) return [];
 
-    const $ = await load(item, cat);
-    const limit = 5;
+    const $ = await load_az(item, cat);
+    const limit = 3;
     let data = [];
 
     if($ == null) return data;
 
     for(let i = 0; i < limit; i++)
     {
-        data.push(getData($, i));
+        data.push(getData_az($, i));
     }
 
     return data;
 }
 
 
-module.exports = getInfo ;
+module.exports = getInfo_az ;

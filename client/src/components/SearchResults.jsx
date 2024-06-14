@@ -31,7 +31,6 @@ const SearchResults = () => {
                     setData(JSON.parse(cachedData));
                     setLoading(false);
                 } else {
-                    const category = 'stripbooks';
                     // http://api.savebucks.co/api/amazon
                     // http://localhost:3000/api/amazon
                     const response = await fetch('http://localhost:3000/api/amazon', {
@@ -40,8 +39,7 @@ const SearchResults = () => {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                            item: query,
-                            category: category,
+                            item: query
                         }),
                     });
                     const result = await response.json();

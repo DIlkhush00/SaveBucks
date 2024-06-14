@@ -20,14 +20,26 @@ const Product = ({ product, index }) => {
                 <Typography component="div" variant="h6">
                     {product.title}
                 </Typography>
+                {product.extra !== '' && (
+                    <Typography variant="subtitle1" color="text.secondary" component="div">
+                        {product.extra}
+                    </Typography>
+                )}
+                {product.authorName !== '' && (
+                    <Typography variant="subtitle1" color="text.secondary" component="div">
+                        by {product.authorName}
+                    </Typography>
+                )}
+                {product.type !== '' && (
+                    <Typography variant="subtitle1" color="text.secondary" component="div">
+                        Type: {product.type}
+                    </Typography>
+                )}
                 <Typography variant="subtitle1" color="text.secondary" component="div">
-                    by {product.authorName}
+                    Price: {product.price !== '' ? product.price : 'error'}
                 </Typography>
                 <Typography variant="subtitle1" color="text.secondary" component="div">
-                    Type: {product.type}
-                </Typography>
-                <Typography variant="subtitle1" color="text.secondary" component="div">
-                    Price: {product.price}
+                    Source: {product.source}
                 </Typography>
                 <Button sx={{width: '100%'}} target='_blank' variant="outlined" color="success" href={"https://amazon.in" + product.productURL} >View</Button>
             </CardContent>
