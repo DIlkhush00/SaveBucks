@@ -6,10 +6,10 @@ const Products = ({ productsData }) => {
     return (
         <>
         {productsData ? (
-          <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 1, sm: 1, md: 8 }}>
+          <Grid container spacing={{ xs: 2, md: 3 }}>
             {productsData.map((product, index) => (
-              <Grid item xs={1} sm={1} md={4} key={index}>
-                <Product product={product} key={index} />
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <Product product={product} />
               </Grid>
             ))}
           </Grid>

@@ -85,6 +85,9 @@ const getData_fk = ($, index) => {
     // Source
     obj['source'] = 'Flipkart';
 
+     // Valid
+     obj['valid'] = true;
+
     return obj;
 };
 

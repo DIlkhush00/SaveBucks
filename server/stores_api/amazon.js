@@ -71,6 +71,9 @@ const getData_az = ($, index) => {
     // Extra
     obj['extra'] = '';
 
+    // Valid
+    obj['valid'] = true;
+
     return obj;
 };
 

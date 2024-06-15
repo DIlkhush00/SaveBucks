@@ -13,19 +13,19 @@ const SearchResults = () => {
     const searchParams = new URLSearchParams(location.search);
     const query = searchParams.get('q');
     console.log("this is your query", query)
-
+    
     useEffect(() => {
         // Load cached data on component mount
-       // const cachedData = localStorage.getItem(query);
-       // if (cachedData) {
-       //     setData(JSON.parse(cachedData));
-       // }
+       const cachedData = localStorage.getItem(query);
+       if (cachedData) {
+           setData(JSON.parse(cachedData));
+       }
 
         const getData = async () => {
             try {
                 setLoading(true);
-                //  const cachedData = localStorage.getItem(query);
-                const cachedData = false;
+                const cachedData = localStorage.getItem(query);
+                // const cachedData = false;
                 if (cachedData) {
                     // Use cached data if available
                     setData(JSON.parse(cachedData));
@@ -46,7 +46,7 @@ const SearchResults = () => {
                     console.log(result);
 
                     // Save data to localStorage for caching
-                    //  localStorage.setItem(query, JSON.stringify(result));
+                    localStorage.setItem(query, JSON.stringify(result));
 
                     setData(result);
                     setLoading(false);

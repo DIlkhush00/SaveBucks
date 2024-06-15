@@ -8,7 +8,7 @@ const SearchBar = () => {
   const navigateTo = useNavigate()
 
   const handleSearch = () => {
-    navigateTo(`/search?q=${searchQuery.replace(/ /g, '+')}`)
+    navigateTo(`/search?q=${searchQuery.replace(/ /g, '+').toLowerCase()}`)
   }
 
   const handleSearchChange = (event) => {
