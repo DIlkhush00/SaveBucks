@@ -44,7 +44,7 @@ const SearchBar = ({ query }) => {
           display: 'flex',
           alignItems: 'center',
           width: '100%',
-          maxWidth: '300px',
+          maxWidth: '400px',
           boxSizing: 'border-box',
           border: 1,
           borderColor: 'gray',
