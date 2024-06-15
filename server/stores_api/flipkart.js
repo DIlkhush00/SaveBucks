@@ -51,7 +51,7 @@ const getData_fk = ($, index) => {
 
     // Check if there's any result
     const noResult = $('div.cPHDOP > div.xFpzYq').length > 0;
-    if(noResult) {
+    if(noResult || $(common).length == 0) {
         console.log("No result from flipkart!");
         obj['thumbnail'] = '';
         obj['title'] = '';

@@ -39,7 +39,7 @@ const getData_az = ($, index) => {
     // Check if there's any result - not working as expected!
     // widgetId=messaging-messages-no-results
     const noResult = $('div.widgetId=messaging-messages-no-results').length > 0;
-    if(noResult) {
+    if(noResult || $(common).length == 0) {
         console.log("No result from amazon!");
         obj['thumbnail'] = '';
         obj['title'] = '';
