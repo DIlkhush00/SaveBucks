@@ -32,6 +32,25 @@ const getData_az = ($, index) => {
         
     let common = 'div.s-result-item[data-component-type="s-search-result"]:eq('+ index +')';
 
+    // Check if there's any result - not working as expected!
+    // widgetId=messaging-messages-no-results
+    const noResult = $('div.widgetId=messaging-messages-no-results').length > 0;
+    if(noResult) {
+        console.log("No result from amazon!");
+        obj['thumbnail'] = '';
+        obj['title'] = '';
+        obj['extra'] = '';
+        obj['type'] = '';
+        obj['authorName'] = '';
+        obj['productURL'] = '';
+        obj['price'] = '';
+        obj['source'] = 'Amazon';
+
+        obj['valid'] = false;
+
+        return obj;
+    }
+
     // For product thumbnail
     let thumbSelector = `${common} .s-image`;
     let thumbnail = $(thumbSelector).attr('src');
@@ -72,7 +91,7 @@ const getData_az = ($, index) => {
     obj['extra'] = '';
 
     // Valid
-    obj['valid'] = true;
+    obj['valid'] = (obj.title !== '' && obj.price !== '');
 
     return obj;
 };

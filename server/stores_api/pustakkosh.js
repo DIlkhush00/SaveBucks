@@ -51,10 +51,28 @@ const getData_pk = ($, index) => {
     let obj = {};
     let common = 'div.content-product:eq(' + index + ')';
 
+    // Check if there's any result
+    const noResult = $('div.empty-category-block').length > 0;
+    if(noResult) {
+        console.log("No result from pustakkosh!");
+        obj['thumbnail'] = '';
+        obj['title'] = '';
+        obj['extra'] = '';
+        obj['type'] = '';
+        obj['authorName'] = '';
+        obj['productURL'] = '';
+        obj['price'] = '';
+        obj['source'] = 'PustakKosh';
+
+        obj['valid'] = false;
+
+        return obj;
+    }
+
     // Check the available stock
     let stockSelector = `${common} > div.product-image-wrapper > p`;
     let outOfStock = $(stockSelector).hasClass('out-of-stock');
-
+    
     if(outOfStock) {
         obj['thumbnail'] = '';
         obj['title'] = '';

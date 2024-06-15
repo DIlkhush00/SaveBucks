@@ -49,6 +49,24 @@ const getData_fk = ($, index) => {
     let obj = {};
     let common = 'div.cPHDOP > div._75nlfW > div:eq(' + index + ')';
 
+    // Check if there's any result
+    const noResult = $('div.cPHDOP > div.xFpzYq').length > 0;
+    if(noResult) {
+        console.log("No result from flipkart!");
+        obj['thumbnail'] = '';
+        obj['title'] = '';
+        obj['extra'] = '';
+        obj['type'] = '';
+        obj['authorName'] = '';
+        obj['productURL'] = '';
+        obj['price'] = '';
+        obj['source'] = 'Flipkart';
+
+        obj['valid'] = false;
+
+        return obj;
+    }
+
     // For product thumbnail
     let thumbSelector = `${common} div.slAVV4 > a.VJA3rP div._4WELSP > img`;
     let thumbnail = $(thumbSelector).attr('src');

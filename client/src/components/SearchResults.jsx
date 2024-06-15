@@ -6,7 +6,7 @@ import { CircularProgress } from "@mui/material";
 
 const SearchResults = () => {
 
-    const [data, setData] = useState(null);
+    const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
 
     const location = useLocation();
@@ -20,6 +20,12 @@ const SearchResults = () => {
         return Number(priceString.replace(/[^0-9.-]+/g,""));
     }
     
+    function titleCase(str) {
+        return str.split(' ')
+                  .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                  .join(' ');
+    }
+
     useEffect(() => {
         // Load cached data on component mount
        const cachedData = localStorage.getItem(query);
@@ -31,7 +37,7 @@ const SearchResults = () => {
             try {
                 setLoading(true);
                 const cachedData = localStorage.getItem(query);
-                // const cachedData = false;
+
                 if (cachedData) {
                     // Use cached data if available
                     setData(JSON.parse(cachedData));
@@ -66,11 +72,12 @@ const SearchResults = () => {
                     }
 
                     setData(result);
-                    setLoading(false);
                 }
             } catch (error) {
                 console.error('Error in fetching the data:', error);
-                setData(null);
+                setData([]);
+
+            } finally {
                 setLoading(false);
             }
         };
@@ -78,16 +85,17 @@ const SearchResults = () => {
         if (query) {
             getData();
         } else {
-            setData(null);
+            setData([]);
         }
 
     }, [query]);
 
+    console.log(data, " :", loading);
 
     return (
         <Container>
-            <Typography variant='h5' sx={{ mb: 4 }}>You are searching for '<b>{query}</b>'</Typography>
-            {data && !loading ?
+            <Typography variant='h5' sx={{ mb: 4 }}>You are searching for '<b>{titleCase(query)}</b>'</Typography>
+            {data.length > 0 && !loading ?
                 (<Products productsData={data} />)
                 : loading
                     ? (
@@ -98,11 +106,19 @@ const SearchResults = () => {
                             />
                         </Box>
                     )
-                    : ((data == null || data == undefined) && !loading) ? (<Typography variant='h5'>No book found. Try something else</Typography>) : (<>Looks like something's wrong. Please try again after a coffee break</>)
+                    : (
+                        <>
+                        { 
+                          (data.length == 0 && !loading) ? (
+                                <Typography variant='h5'>No book found. Try something else</Typography>
+                            ) : (<>Some unknown error has occurred </>)
+                        }
+                        </>
+                    )
             }
         </Container>
     )
 }
 
 
-export default SearchResults
+export default SearchResults;

@@ -43,7 +43,7 @@ const SearchBar = () => {
           display: 'flex',
           alignItems: 'center',
           width: '100%',
-          maxWidth: '300px', // Set the maximum width of the search bar
+          maxWidth: '300px',
           boxSizing: 'border-box',
           border: 1,
           borderColor: 'gray',
