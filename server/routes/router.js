@@ -8,30 +8,33 @@ router.post("/amazon", async (req, res) => {
     const category_az = 'stripbooks';
     const category_fk = 'books';
     const category_pk = 'product';
-    let totalData = [];
 
-    // Getting Data From The Amazon
-    getInfo_az(item, category_az)
-    .then((data) => {
-       totalData = totalData.concat(data);
+    // Create an array of promises for all the API calls
+    const promises = [
+        getInfo_az(item, category_az),
+        getInfo_fk(item, category_fk),
+        getInfo_pk(item, category_pk)
+    ];
 
-        // Getting Data From The Flipkart
-        return getInfo_fk(item, category_fk);
-    })
-    .then((data) => {
-        totalData = totalData.concat(data);
+    // Use Promise.allSettled to wait for all the promises to settle
+    Promise.allSettled(promises)
+        .then((results) => {
+            let totalData = [];
 
-        // Getting Data From The PustakKosh
-        return getInfo_pk(item, category_pk);
-    })
-    .then((data) => {
-        totalData = totalData.concat(data);
-        res.status(200).send(totalData);
-    })
-    .catch((err) => {
-        res.status(500).send("Encountered an unexpected error while getting the data");
-        console.log("Got error: ", err);
-    })
+            results.forEach((result) => {
+                if (result.status === "fulfilled") {
+                    totalData = totalData.concat(result.value);
+                } else {
+                    console.log("Got error: ", result.reason);
+                }
+            });
+
+            res.status(200).send(totalData);
+        })
+        .catch((err) => {
+            res.status(500).send("Encountered an unexpected error while getting the data");
+            console.log("Got error: ", err);
+        });
 });
 
 module.exports = router;

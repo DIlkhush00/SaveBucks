@@ -50,10 +50,10 @@ const load_pk = async (item, cat) => {
 const getData_pk = ($, index) => {
     let obj = {};
     let common = 'div.content-product:eq(' + index + ')';
-
+    
     // Check if there's any result
     const noResult = $('div.empty-category-block').length > 0;
-    if(noResult) {
+    if(noResult || $(common).length == 0) {
         console.log("No result from pustakkosh!");
         obj['thumbnail'] = '';
         obj['title'] = '';

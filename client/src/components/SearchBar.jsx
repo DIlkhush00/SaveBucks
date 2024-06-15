@@ -3,7 +3,7 @@ import { Search } from '@mui/icons-material'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const SearchBar = () => {
+const SearchBar = ({ query }) => {
   const [searchQuery, setSearchQuery] = useState('')
   const navigateTo = useNavigate()
 
@@ -14,6 +14,11 @@ const SearchBar = () => {
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
+
+  if(query !== '') {
+    console.log("Your serach prop: ", query);
+    setSearchQuery(query);
+  }
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
@@ -32,10 +37,6 @@ const SearchBar = () => {
         justifyContent: 'center',
       }}
     >
-      <Typography variant="h4" gutterBottom>
-        Find any book you want!
-      </Typography>
-
       {/* Search Bar */}
       <Box
         sx={{

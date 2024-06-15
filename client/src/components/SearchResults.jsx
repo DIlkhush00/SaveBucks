@@ -94,7 +94,7 @@ const SearchResults = () => {
 
     return (
         <Container>
-            <Typography variant='h5' sx={{ mb: 4 }}>You are searching for '<b>{titleCase(query)}</b>'</Typography>
+            <Typography variant='h5' sx={{ mb: 4 }}>You are searched for "<b>{titleCase(query)}</b>"</Typography>
             {data.length > 0 && !loading ?
                 (<Products productsData={data} />)
                 : loading
