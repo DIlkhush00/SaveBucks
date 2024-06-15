@@ -16,7 +16,7 @@ const Product = ({ product }) => {
 
     return (
         product.valid ? (
-            <Card sx={{ display: 'flex', flexDirection: 'column', maxWidth: '100%' }}>
+            <Card sx={{ display: 'flex', flexDirection: 'column', maxWidth: '100%', height: '100%' }}>
                 <CardMedia
                     component="img"
                     sx={{
@@ -33,6 +33,7 @@ const Product = ({ product }) => {
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'space-between',
+                        
                     }}
                 >
                     <div>

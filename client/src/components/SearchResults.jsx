@@ -12,7 +12,13 @@ const SearchResults = () => {
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const query = searchParams.get('q');
-    console.log("this is your query", query)
+    console.log("this is your query", query);
+
+    // Function to extract numeric value from a price string
+    function extractNumericValue(priceString) {
+        // Removing non-numeric characters and converting to number
+        return Number(priceString.replace(/[^0-9.-]+/g,""));
+    }
     
     useEffect(() => {
         // Load cached data on component mount
@@ -42,11 +48,22 @@ const SearchResults = () => {
                             item: query
                         }),
                     });
-                    const result = await response.json();
-                    console.log(result);
+                    let result = await response.json();
+                    console.log("Result: ", result);
 
+                    result = result.filter(product => product.valid)
+                        .sort((a, b) => {
+                        
+                        let priceA = extractNumericValue(a.price);
+                        let priceB = extractNumericValue(b.price);
+                    
+                        return priceA - priceB;
+                    });
+                  
                     // Save data to localStorage for caching
-                    localStorage.setItem(query, JSON.stringify(result));
+                    if(result.length > 0) {
+                        localStorage.setItem(query, JSON.stringify(result));
+                    }
 
                     setData(result);
                     setLoading(false);
