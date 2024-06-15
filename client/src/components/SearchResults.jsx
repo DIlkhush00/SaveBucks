@@ -5,7 +5,8 @@ import Products from "./Products";
 import { CircularProgress } from "@mui/material";
 
 const SearchResults = () => {
-    const [data, setData] = useState([]);
+    const [originalData, setOriginalData] = useState([]);
+    const [sortedData, setSortedData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [sortBy, setSortBy] = useState('relevance');
 
@@ -53,56 +54,66 @@ const SearchResults = () => {
     };
 
     useEffect(() => {
-        const cachedData = localStorage.getItem(query);
-        if (cachedData) {
-            setData(JSON.parse(cachedData));
-        }
-
         const getData = async () => {
-            try {
-                setLoading(true);
-                const response = await fetch('http://localhost:3000/api/amazon', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        item: query
-                    }),
-                });
-                let result = await response.json();
-                result = result.filter(product => product.valid);
+            let cachedData = localStorage.getItem(query);
+            if (cachedData) {
+                // Parse cachedData back into an array of objects
+                cachedData = JSON.parse(cachedData);
+                setOriginalData(cachedData);
+                sortAndSetData(cachedData); // Sort cached data immediately
+            } else {
+                try {
+                    setLoading(true);
+                    const response = await fetch('http://localhost:3000/api/amazon', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            item: query
+                        }),
+                    });
+                    let result = await response.json();
+                    result = result.filter(product => product.valid);
 
-                // Sorting based on selected sortBy option
-                switch (sortBy) {
-                    case 'relevance':
-                        result.sort(sortByRelevance);
-                        break;
-                    case 'priceLowToHigh':
-                        result.sort(sortByPriceLowToHigh);
-                        break;
-                    case 'priceHighToLow':
-                        result.sort(sortByPriceHighToLow);
-                        break;
-                    default:
-                        break;
+                    // Save data to localStorage for caching
+                    localStorage.setItem(query, JSON.stringify(result));
+
+                    setOriginalData(result); // Store original fetched data
+                    sortAndSetData(result); // Sort fetched data
+                } catch (error) {
+                    console.error('Error in fetching the data:', error);
+                    setOriginalData([]);
+                    setSortedData([]);
+                } finally {
+                    setLoading(false);
                 }
-
-                // Save data to localStorage for caching
-                localStorage.setItem(query, JSON.stringify(result));
-                setData(result);
-            } catch (error) {
-                console.error('Error in fetching the data:', error);
-                setData([]);
-            } finally {
-                setLoading(false);
             }
+        };
+
+        const sortAndSetData = (dataToSort) => {
+            // Sort data based on selected sortBy option
+            switch (sortBy) {
+                case 'relevance':
+                    dataToSort.sort(sortByRelevance);
+                    break;
+                case 'priceLowToHigh':
+                    dataToSort.sort(sortByPriceLowToHigh);
+                    break;
+                case 'priceHighToLow':
+                    dataToSort.sort(sortByPriceHighToLow);
+                    break;
+                default:
+                    break;
+            }
+            setSortedData([...dataToSort]); // Update sorted data state
         };
 
         if (query) {
             getData();
         } else {
-            setData([]);
+            setOriginalData([]);
+            setSortedData([]);
         }
 
     }, [query, sortBy]);
@@ -127,8 +138,8 @@ const SearchResults = () => {
                 </Select>
             </Box>
             
-            {data.length > 0 && !loading ?
-                <Products productsData={data} />
+            {sortedData.length > 0 && !loading ?
+                <Products productsData={sortedData} />
                 : loading ?
                 <Box sx={{ height: '50vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <CircularProgress sx={{ color: 'gray' }} variant="indeterminate" />
