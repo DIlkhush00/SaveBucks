@@ -2,13 +2,19 @@ import { Typography, Box } from '@mui/material'
 import SearchBar from "./SearchBar"
 import SearchResults from "./SearchResults"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { ReactTyped } from "react-typed";
 
 const HomeBlock = () => {
 
     return (
-        <Box sx={{ display: 'flex', justifyContent: 'center', textAlign: 'center', mt: 4 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', textAlign: 'center', mt: 10 }}>
             <Typography variant="h4" gutterBottom>
-                Find any book you want!
+                <ReactTyped
+                    strings={["Find any book you want"]}
+                    typeSpeed={50}
+                    cursorChar="!"
+                    showCursor={true}
+                />
             </Typography>
         </Box>
     )
