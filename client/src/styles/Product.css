@@ -15,6 +15,10 @@
     height: auto;
     border-radius: 4px;
   }
+
+  .product-card img:hover {
+    transform: scale(1.2);
+  }
   
   .product-card h3 {
     margin-top: 10px;

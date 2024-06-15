@@ -16,13 +16,26 @@ const Product = ({ product }) => {
 
     return (
         product.valid ? (
-            <Card sx={{ display: 'flex', flexDirection: 'column', maxWidth: '100%', height: '100%' }}>
+            <Card sx={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                maxWidth: '100%', 
+                height: '100%',
+                ':hover': {
+                    overflow: 'visible'
+                }
+                }}
+            >
                 <CardMedia
                     component="img"
                     sx={{
                         width: '100%',
                         height: 200,
-                        objectFit: 'contain'
+                        objectFit: 'contain',
+                        transition: 'transform 0.3s ease-in-out',
+                        ':hover': {
+                            transform: 'scale(1.3)',
+                        }
                     }}
                     image={product.thumbnail}
                     alt={product.title}

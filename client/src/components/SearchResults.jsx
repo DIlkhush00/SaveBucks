@@ -116,6 +116,19 @@ const SearchResults = () => {
             setSortedData([]);
         }
 
+        // Cleanup function for clearing localStorage on page unload
+        const clearLocalStorage = () => {
+            localStorage.removeItem(query);
+        };
+
+        // Add event listener for page unload
+        window.addEventListener('beforeunload', clearLocalStorage);
+
+        // Remove event listener on component unmount
+        return () => {
+            window.removeEventListener('beforeunload', clearLocalStorage);
+        };
+
     }, [query, sortBy]);
 
     const handleSortChange = (event) => {
@@ -136,6 +149,7 @@ const SearchResults = () => {
                     <MenuItem value="priceLowToHigh">Price: Low to High</MenuItem>
                     <MenuItem value="priceHighToLow">Price: High to Low</MenuItem>
                 </Select>
+                
             </Box>
             
             {sortedData.length > 0 && !loading ?
