@@ -18,7 +18,6 @@ const load_fk = async (item, cat) => {
       };
 
     try {
-        console.log("Requesting Flipkart URL: ", url);
         const response = await axios.get(url, { headers })
 
         return cheerio.load(response.data);
@@ -52,7 +51,6 @@ const getData_fk = ($, index) => {
     // Check if there's any result
     const noResult = $('div.cPHDOP > div.xFpzYq').length > 0;
     if(noResult || $(common).length == 0) {
-        console.log("No result from flipkart!");
         obj['thumbnail'] = '';
         obj['title'] = '';
         obj['extra'] = '';
@@ -80,7 +78,6 @@ const getData_fk = ($, index) => {
     // For author (if product is a book), type
     let textSelector = `${common} div.slAVV4 > a.wjcEIp + div.NqpwHC`;
     let extra = $(textSelector).text();
-    console.log("Text: ", extra);
 
     obj['extra'] = extra !== undefined ? extra : '';
 

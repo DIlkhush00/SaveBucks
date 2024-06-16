@@ -10,8 +10,6 @@ const load_az = async (item, cat = '') => {
     const category = cat != ''? `&i=${cat}`: '';
     const url = proto + domain + top_level_domain + query + item + category;
     
-    console.log("url: ", url);
-
     const headers = {
         'Accept': 'application/json, text/plain, */*',
         'Content-Type': 'application/json',
@@ -26,7 +24,22 @@ const load_az = async (item, cat = '') => {
         return cheerio.load(response.data);
 
     } catch(error) {
-        console.log("Error in getting html page", error);
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+        } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log(error.request);
+        } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+        }
+        console.log(error.config);
     }
 
 }
@@ -40,7 +53,6 @@ const getData_az = ($, index) => {
     // widgetId=messaging-messages-no-results
     const noResult = $('div.widgetId=messaging-messages-no-results').length > 0;
     if(noResult || $(common).length == 0) {
-        console.log("No result from amazon!");
         obj['thumbnail'] = '';
         obj['title'] = '';
         obj['extra'] = '';
@@ -102,7 +114,6 @@ const getData_az = ($, index) => {
 
 
 const getInfo_az = async (item, cat) => {
-    console.log("item: ", item, " cat: ", cat);
 
     if(item == undefined) return [];
 

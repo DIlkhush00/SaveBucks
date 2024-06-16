@@ -20,7 +20,6 @@ const load_pk = async (item, cat) => {
       };
 
     try {
-        console.log("Requesting Pustakkosh URL: ", url);
         const response = await axios.get(url, { headers })
 
         return cheerio.load(response.data);
@@ -120,21 +119,15 @@ const getData_pk = ($, index) => {
     let parentTag = parentDiscountElem.prop('tagName').toLowerCase();
 
     let priceSelector = '';
-    let symbolSelector = '';
-    console.log("parentTag, ", parentTag);
+
     if(parentTag == 'del') {
-        console.log("del detected")
         priceSelector = `${common} > div.product-details > span.price > ins > span.woocommerce-Price-amount  > bdi`;
-        // symbolSelector = `${common} > div.product-details > span.price > ins > span.woocommerce-Price-amount > bdi > span.woocommerce-Price-currencySymbol`;
 
     } else {
-        console.log("no del");
         priceSelector = `${common} > div.product-details > span.price  span.woocommerce-Price-amount  > bdi`;
-        // symbolSelector = `${common} > div.product-details > span.price  span.woocommerce-Price-amount > bdi > span.woocommerce-Price-currencySymbol`;
     }
 
     let price = $(priceSelector).text();
-    // let symbol = $(symbolSelector).text();
 
     obj['price'] = price !== undefined ? price : '';
 

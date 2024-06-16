@@ -64,7 +64,7 @@ const SearchResults = () => {
             } else {
                 try {
                     setLoading(true);
-                    const response = await fetch('http://localhost:3000/api/amazon', {
+                    const response = await fetch('http://localhost:3000/api/books', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
@@ -79,8 +79,8 @@ const SearchResults = () => {
                     // Save data to localStorage for caching
                     localStorage.setItem(query, JSON.stringify(result));
 
-                    setOriginalData(result); // Store original fetched data
-                    sortAndSetData(result); // Sort fetched data
+                    setOriginalData(result);
+                    sortAndSetData(result);
                 } catch (error) {
                     console.error('Error in fetching the data:', error);
                     setOriginalData([]);
@@ -92,7 +92,7 @@ const SearchResults = () => {
         };
 
         const sortAndSetData = (dataToSort) => {
-            // Sort data based on selected sortBy option
+
             switch (sortBy) {
                 case 'relevance':
                     dataToSort.sort(sortByRelevance);
@@ -106,7 +106,7 @@ const SearchResults = () => {
                 default:
                     break;
             }
-            setSortedData([...dataToSort]); // Update sorted data state
+            setSortedData([...dataToSort]);
         };
 
         if (query) {

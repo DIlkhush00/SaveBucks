@@ -3,7 +3,7 @@ const getInfo_az = require('../stores_api/amazon');
 const getInfo_fk = require('../stores_api/flipkart');
 const getInfo_pk = require('../stores_api/pustakkosh');
 
-router.post("/amazon", async (req, res) => {
+router.post("/books", async (req, res) => {
     const { item } = req.body;
     const category_az = 'stripbooks';
     const category_fk = 'books';
