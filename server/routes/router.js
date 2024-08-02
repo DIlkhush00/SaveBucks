@@ -24,8 +24,6 @@ router.post("/books", async (req, res) => {
             results.forEach((result) => {
                 if (result.status === "fulfilled") {
                     totalData = totalData.concat(result.value);
-                } else {
-                    console.log("Got error: ", result.reason);
                 }
             });
 
@@ -33,7 +31,6 @@ router.post("/books", async (req, res) => {
         })
         .catch((err) => {
             res.status(500).send("Encountered an unexpected error while getting the data");
-            console.log("Got error: ", err);
         });
 });
 

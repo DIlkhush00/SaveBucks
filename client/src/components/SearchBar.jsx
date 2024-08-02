@@ -16,7 +16,6 @@ const SearchBar = ({ query }) => {
   };
 
   if(query !== '') {
-    console.log("Your serach prop: ", query);
     setSearchQuery(query);
   }
 
