@@ -64,7 +64,8 @@ const SearchResults = () => {
             } else {
                 try {
                     setLoading(true);
-                    const response = await fetch('http://localhost:3000/api/books', {
+                    const endpoint = import.meta.env.VITE_API_ENDPOINT;
+                    const response = await fetch(endpoint, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
