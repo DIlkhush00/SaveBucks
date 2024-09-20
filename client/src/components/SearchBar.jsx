@@ -53,7 +53,7 @@ const SearchBar = ({ query }) => {
       >
         <Search sx={{ ml: 2, mr: 2 }} onClick={handleSearch} />
         <InputBase
-          placeholder="Search..."
+          placeholder="Search any item..."
           inputProps={{ 'aria-label': 'search' }}
           sx={{ flex: 1, mr: 2 }}
           value={searchQuery}

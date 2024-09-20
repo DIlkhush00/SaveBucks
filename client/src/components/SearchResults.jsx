@@ -12,7 +12,7 @@ const SearchResults = () => {
 
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
-    const query = searchParams.get('q');
+    const query = searchParams.get('q').trim().toLowerCase();
 
     function extractNumericValue(priceString) {
         return Number(priceString.replace(/[^0-9.-]+/g,""));
@@ -159,7 +159,7 @@ const SearchResults = () => {
                 <Box sx={{ height: '50vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <CircularProgress sx={{ color: 'gray' }} variant="indeterminate" />
                 </Box>
-                : <Typography variant='h5'>No books found. Try something else.</Typography>
+                : <Typography variant='h5'>No item found. Try something else.</Typography>
             }
         </Container>
     )

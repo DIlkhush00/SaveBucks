@@ -2,18 +2,14 @@ const router = require("express").Router();
 const getInfo_az = require('../stores_api/amazon');
 const getInfo_fk = require('../stores_api/flipkart');
 const getInfo_pk = require('../stores_api/pustakkosh');
+const getInfo_gg = require('../stores_api/google');
 
-router.post("/books", async (req, res) => {
+router.post("/products", async (req, res) => {
     const { item } = req.body;
-    const category_az = 'stripbooks';
-    const category_fk = 'books';
-    const category_pk = 'product';
+    const category_gg = 'shop';
 
-    // Create an array of promises for all the API calls
     const promises = [
-        getInfo_az(item, category_az),
-        getInfo_fk(item, category_fk),
-        getInfo_pk(item, category_pk)
+        getInfo_gg(item, category_gg),
     ];
 
     // Use Promise.allSettled to wait for all the promises to settle

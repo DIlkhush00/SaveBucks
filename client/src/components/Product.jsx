@@ -5,14 +5,18 @@ import Typography from '@mui/material/Typography';
 import { Button } from '@mui/material';
 
 const Product = ({ product }) => {
-    let prefixURL = '';
-
-    // PustakKosh's product URL contains the entire URL so there's no need to set any condition for it
-    if(product.source === 'Amazon') {
-        prefixURL = "https://amazon.in";
-    } else if(product.source === 'Flipkart') {
-        prefixURL = "https://flipkart.com";
+    let prefixURL = 'https://www.google.com';
+    let URL = product.productURL ? product.productURL : product.productSecondaryURL;
+    if(URL.startsWith('/url?url='))
+    {
+       URL = URL.replace('/url?url=', '');
     }
+    else if(URL.startsWith('/'))
+    {
+        URL = prefixURL + URL;
+    }
+    URL = URL.replace(/\/url\?url=/, '').split('&')[0];
+    console.log(URL);
 
     return (
         product.valid ? (
@@ -66,55 +70,6 @@ const Product = ({ product }) => {
                         >
                             {product.title}
                         </Typography>
-                        {product.authorName !== '' && (
-                            <Typography 
-                                variant="body2" 
-                                color="text.secondary" 
-                                component="div"
-                                sx={{
-                                    mb: 1,
-                                    fontSize: '0.9rem',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap',
-                                    width: '100%',
-                                }}
-                                title={product.authorName} 
-                            >
-                                by {product.authorName}
-                            </Typography>
-                        )}
-                        {product.extra !== '' && (
-                            <Typography 
-                                variant="body2"
-                                color="text.secondary" 
-                                component="div"
-                                sx={{
-                                    mb: 1,
-                                    fontSize: '0.9rem',
-                                    overflow: 'hidden',
-                                    textOverflow: 'ellipsis',
-                                    whiteSpace: 'nowrap',
-                                    width: '100%',
-                                }}
-                                title={product.extra} 
-                            >
-                                {product.extra}
-                            </Typography>
-                        )}
-                        {product.type !== '' && (
-                            <Typography 
-                                variant="body2" 
-                                color="text.secondary" 
-                                component="div"
-                                sx={{
-                                    mb: 1,
-                                    fontSize: '0.9rem'
-                                }}
-                            >
-                                Type: {product.type}
-                            </Typography>
-                        )}
                         <Typography 
                             variant="body2" 
                             color="text.secondary" 
@@ -143,7 +98,7 @@ const Product = ({ product }) => {
                         target='_blank' 
                         variant="outlined" 
                         color="success" 
-                        href={prefixURL + product.productURL}
+                        href={ URL }
                     >
                         View
                     </Button>
