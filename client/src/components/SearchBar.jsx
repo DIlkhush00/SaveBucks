@@ -8,7 +8,8 @@ const SearchBar = ({ query }) => {
   const navigateTo = useNavigate()
 
   const handleSearch = () => {
-    navigateTo(`/search?q=${searchQuery.replace(/ /g, '+').toLowerCase()}`)
+    if(searchQuery.length > 0)
+      navigateTo(`/search?q=${searchQuery.replace(/ /g, '+').toLowerCase()}`)
   }
 
   const handleSearchChange = (event) => {
@@ -21,7 +22,7 @@ const SearchBar = ({ query }) => {
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      handleSearch();
+        handleSearch();
     }
   };
 
@@ -52,13 +53,13 @@ const SearchBar = ({ query }) => {
       >
         <Search sx={{ ml: 2, mr: 2 }} onClick={handleSearch} />
         <InputBase
-          placeholder="Search..."
+          placeholder="Search any item..."
           inputProps={{ 'aria-label': 'search' }}
           sx={{ flex: 1, mr: 2 }}
           value={searchQuery}
           onChange={handleSearchChange}
           onKeyDown={handleKeyPress}
-        />
+        />  
       </Box>
     </Container>
   );
