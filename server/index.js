@@ -8,7 +8,7 @@ const app = express();
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
     cors: {
-        origin: "http://localhost:4040",
+        origin: "http://localhost:3000",
         methods: ["GET", "POST"]
     }
 });
@@ -32,8 +32,6 @@ io.on("connection", socket => {
 
   socket_id.push(socket.id);
   if (socket_id[0] === socket.id) {
-    // remove the connection listener for any subsequent 
-    // connections with the same ID
     io.removeAllListeners('connection'); 
   }
 

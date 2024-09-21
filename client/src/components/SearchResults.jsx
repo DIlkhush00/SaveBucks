@@ -29,29 +29,25 @@ const SearchResults = () => {
                   .join(' ');
     }
 
-    // Sorting function for relevance
     const sortByRelevance = (bookA, bookB) => {
         let includesQueryA = bookA.title.toLowerCase().includes(query.toLowerCase());
         let includesQueryB = bookB.title.toLowerCase().includes(query.toLowerCase());
         
-        // Compare based on inclusion of queryString in title
         if (includesQueryA && !includesQueryB) {
-            return -1; // bookA comes before bookB
+            return -1; 
         } else if (!includesQueryA && includesQueryB) {
-            return 1; // bookB comes before bookA
+            return 1; 
         } else {
-            return 0; // maintain current order or no significant difference
+            return 0; 
         }
     }
 
-    // Sorting function for price low to high
     const sortByPriceLowToHigh = (a, b) => {
         let priceA = extractNumericValue(a.price);
         let priceB = extractNumericValue(b.price);
         return priceA - priceB;
     };
 
-    // Sorting function for price high to low
     const sortByPriceHighToLow = (a, b) => {
         let priceA = extractNumericValue(a.price);
         let priceB = extractNumericValue(b.price);
@@ -69,11 +65,10 @@ const SearchResults = () => {
         });
     };
 
-    // When setting data, reapply the thumbnails
     const reapplyThumbnails = (data) => {
         return data.map((item) => ({
             ...item,
-            thumbnail: thumbnails[item.id] || item.thumbnail, // Use the latest thumbnail
+            thumbnail: thumbnails[item.id] || item.thumbnail,
         }));
     };
 
@@ -93,19 +88,15 @@ const SearchResults = () => {
                 break;
         }
 
-        // Reapply thumbnails after sorting
         const dataWithThumbnails = reapplyThumbnails(dataToSort);
-        setOriginalData(dataWithThumbnails); // Set sorted data with thumbnails
-        console.log(dataWithThumbnails);
+        setOriginalData(dataWithThumbnails);
     };
 
     socket.current = io(serverEndpoint);
     useEffect(() => {
   
         socket.current.on('connect', () => {
-            clientId.current = socket.current.id;
-            console.log('Connected to server: ', clientId.current);
-            
+            clientId.current = socket.current.id;            
             if (clientId.current && query.length > 0) {
                 getData();
             } else {
@@ -118,7 +109,6 @@ const SearchResults = () => {
 
                 const updatedData = prevData.map(item =>{
                     const thumbnailObject = thumbnailsArray.find(thumb => thumb.id === item.id);
-                    console.log("thub: ", thumbnailObject);
                     return thumbnailObject != undefined
                         ? { ...item, thumbnail: thumbnailObject.thumbnail }
                         : item;
@@ -158,7 +148,6 @@ const SearchResults = () => {
                     });
                     let result = await response.json();
                     result = result.filter(product => product.valid);
-                    console.log("result: ", result);
 
                     localStorage.setItem(query, JSON.stringify(result));
 

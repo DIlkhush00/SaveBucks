@@ -27,10 +27,8 @@ router.post("/products", async (req, res) => {
             res.status(200).send(totalData);
 
             const io = req.app.get('socketio');
-            console.log("Here's your clientID: ", clientId);
 
             dynamicContentHandler(url, limit).then((thumbnails) => {
-                console.log(thumbnails);
                 io.to(clientId).emit('image-loaded', { thumbnails });
             }).catch((error) => {
                 console.log("Error loading dynamic content: ", error);
