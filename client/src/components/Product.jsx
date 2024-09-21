@@ -16,7 +16,6 @@ const Product = ({ product }) => {
         URL = prefixURL + URL;
     }
     URL = URL.replace(/\/url\?url=/, '').split('&')[0];
-    console.log(URL);
 
     return (
         product.valid ? (
@@ -41,7 +40,7 @@ const Product = ({ product }) => {
                             transform: 'scale(1.3)',
                         }
                     }}
-                    image={product.thumbnail}
+                    image={product.thumbnail ? product.thumbnail : "https://media.giphy.com/media/xTkcEQACH24SMPxIQg/giphy.gif?cid=ecf05e47ci7gxtq9v74se0k9jc2fwho5620reuyofasu41p8&ep=v1_gifs_search&rid=giphy.gif&ct=g"}
                     alt={product.title}
                 />
                 <CardContent 

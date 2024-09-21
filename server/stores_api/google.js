@@ -1,6 +1,5 @@
 const cheerio = require('cheerio');
 const axios = require('axios');
-const dynamicContentHandler = require('../stores_api/dynamicContentHandler');
 
 const load_gg = async (url, headers) => {
 
@@ -56,10 +55,13 @@ const getData_gg = ($, index) => {
         return obj;
     }
     
+    // For product idsh-dgr__grid-result
+    let ID = $(common).attr('data-gpcid');
+    obj['id'] = ID ? ID : '';
+
     // For product thumbnail
-    // let thumbSelector = `${common} div.ArOc1c > img`;
-    // let thumbnail = $(thumbSelector).attr('src');
-    // obj['thumbnail'] = thumbnail !== undefined ? thumbnail : '';
+    obj['thumbnail'] = '';
+
 
     // For product title
     let titleSelector = `${common} div.EI11Pd > h3.tAxDx`;
@@ -103,27 +105,17 @@ const getData_gg = ($, index) => {
 };
 
 
-const getInfo_gg = async (item, cat) => {
+const getInfo_gg = async (url, limit = 5) => {
 
-    const proto = "https://www.";
-    const domain = "google";
-    const top_level_domain = ".com";
-    const baseQuery = "/search?q=";
-    const itemQuery = baseQuery + item;
-    const category = cat !== '' ? '&tbm=' + cat : '';
-    const url = proto + domain + top_level_domain + itemQuery + category;
     const headers = {
         'Accept': 'application/json, text/plain, */*',
         'Content-Type': 'application/json',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36', // Mimicking a browser User-Agent
         'Accept-Encoding': 'gzip, deflate, br',
         'Connection': 'keep-alive'
-      };
-
-    if(item == undefined) return [];
+    };
 
     const $ = await load_gg(url, headers);
-    const limit = 10;
     let data = [];
 
     if($ == null) return data;
@@ -131,9 +123,6 @@ const getInfo_gg = async (item, cat) => {
     for(let index = 0; index < limit; index++)
     {
         let obj = getData_gg($, index);
-        let thumbnail = await dynamicContentHandler(url, index);
-        console.log(thumbnail);
-        obj['thumbnail'] = thumbnail !== undefined ? thumbnail : '';
         data.push(obj);
     }
 

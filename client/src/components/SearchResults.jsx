@@ -1,18 +1,23 @@
 import { Box, Container, Typography, MenuItem, Select } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
-import Products from "./Products";
 import { CircularProgress } from "@mui/material";
+import Products from "./Products";
+import io from 'socket.io-client';
 
 const SearchResults = () => {
     const [originalData, setOriginalData] = useState([]);
-    const [sortedData, setSortedData] = useState([]);
+    const [thumbnails, setThumbnails] = useState({});
     const [loading, setLoading] = useState(false);
     const [sortBy, setSortBy] = useState('relevance');
 
     const location = useLocation();
     const searchParams = new URLSearchParams(location.search);
     const query = searchParams.get('q').trim().toLowerCase();
+
+    const socket = useRef(null);
+    const serverEndpoint = import.meta.env.VITE_SERVER_ENDPOINT;
+    const clientId = useRef(null);
 
     function extractNumericValue(priceString) {
         return Number(priceString.replace(/[^0-9.-]+/g,""));
@@ -53,69 +58,121 @@ const SearchResults = () => {
         return priceB - priceA;
     };
 
+    
+    const updateThumbnails = (thumbnailsArray) => {
+        setThumbnails((prev) => {
+            const updatedThumbnails = { ...prev };
+            thumbnailsArray.forEach(({ id, thumbnail }) => {
+                updatedThumbnails[id] = thumbnail;
+            });
+            return updatedThumbnails;
+        });
+    };
+
+    // When setting data, reapply the thumbnails
+    const reapplyThumbnails = (data) => {
+        return data.map((item) => ({
+            ...item,
+            thumbnail: thumbnails[item.id] || item.thumbnail, // Use the latest thumbnail
+        }));
+    };
+
+    const sortAndSetData = (dataToSort) => {
+
+        switch (sortBy) {
+            case 'relevance':
+                dataToSort.sort(sortByRelevance);
+                break;
+            case 'priceLowToHigh':
+                dataToSort.sort(sortByPriceLowToHigh);
+                break;
+            case 'priceHighToLow':
+                dataToSort.sort(sortByPriceHighToLow);
+                break;
+            default:
+                break;
+        }
+
+        // Reapply thumbnails after sorting
+        const dataWithThumbnails = reapplyThumbnails(dataToSort);
+        setOriginalData(dataWithThumbnails); // Set sorted data with thumbnails
+        console.log(dataWithThumbnails);
+    };
+
+    socket.current = io(serverEndpoint);
     useEffect(() => {
+  
+        socket.current.on('connect', () => {
+            clientId.current = socket.current.id;
+            console.log('Connected to server: ', clientId.current);
+            
+            if (clientId.current && query.length > 0) {
+                getData();
+            } else {
+                setOriginalData([]);
+            }
+        });
+
+        const updateImagesData = (thumbnailsArray) => {
+            setOriginalData(prevData => {
+
+                const updatedData = prevData.map(item =>{
+                    const thumbnailObject = thumbnailsArray.find(thumb => thumb.id === item.id);
+                    console.log("thub: ", thumbnailObject);
+                    return thumbnailObject != undefined
+                        ? { ...item, thumbnail: thumbnailObject.thumbnail }
+                        : item;
+                });
+
+                return updatedData;
+            });
+        };
+    
+        socket.current.on('image-loaded', (data) => {
+            const thumbnailsArray = data.thumbnails.thumbnail; 
+            updateImagesData(thumbnailsArray);
+            updateThumbnails(thumbnailsArray);
+            reapplyThumbnails(thumbnailsArray);
+        });
+
         const getData = async () => {
             let cachedData = localStorage.getItem(query);
             if (cachedData) {
-                // Parse cachedData back into an array of objects
                 cachedData = JSON.parse(cachedData);
                 setOriginalData(cachedData);
-                sortAndSetData(cachedData); // Sort cached data immediately
+                sortAndSetData(cachedData);
             } else {
                 try {
                     setLoading(true);
-                    const endpoint = import.meta.env.VITE_API_ENDPOINT;
-                    const response = await fetch(endpoint, {
+                    const apiEndpoint = import.meta.env.VITE_API_ENDPOINT;
+
+                    const response = await fetch(apiEndpoint, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                            item: query
+                            item: query,
+                            clientId: clientId.current
                         }),
                     });
                     let result = await response.json();
                     result = result.filter(product => product.valid);
+                    console.log("result: ", result);
 
-                    // Save data to localStorage for caching
                     localStorage.setItem(query, JSON.stringify(result));
 
                     setOriginalData(result);
                     sortAndSetData(result);
+
                 } catch (error) {
                     console.error('Error in fetching the data:', error);
                     setOriginalData([]);
-                    setSortedData([]);
                 } finally {
                     setLoading(false);
                 }
             }
         };
-
-        const sortAndSetData = (dataToSort) => {
-
-            switch (sortBy) {
-                case 'relevance':
-                    dataToSort.sort(sortByRelevance);
-                    break;
-                case 'priceLowToHigh':
-                    dataToSort.sort(sortByPriceLowToHigh);
-                    break;
-                case 'priceHighToLow':
-                    dataToSort.sort(sortByPriceHighToLow);
-                    break;
-                default:
-                    break;
-            }
-            setSortedData([...dataToSort]);
-        };
-
-        if (query) {
-            getData();
-        } else {
-            setOriginalData([]);
-            setSortedData([]);
-        }
 
         // Cleanup function for clearing localStorage on page unload
         const clearLocalStorage = () => {
@@ -127,6 +184,7 @@ const SearchResults = () => {
 
         // Remove event listener on component unmount
         return () => {
+            // socket.current.disconnect();
             window.removeEventListener('beforeunload', clearLocalStorage);
         };
 
@@ -150,11 +208,11 @@ const SearchResults = () => {
                     <MenuItem value="priceLowToHigh">Price: Low to High</MenuItem>
                     <MenuItem value="priceHighToLow">Price: High to Low</MenuItem>
                 </Select>
-                
+
             </Box>
             
-            {sortedData.length > 0 && !loading ?
-                <Products productsData={sortedData} />
+            {originalData.length > 0 && !loading ?
+                <Products productsData={originalData} />
                 : loading ?
                 <Box sx={{ height: '50vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <CircularProgress sx={{ color: 'gray' }} variant="indeterminate" />

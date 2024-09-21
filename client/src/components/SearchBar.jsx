@@ -8,7 +8,8 @@ const SearchBar = ({ query }) => {
   const navigateTo = useNavigate()
 
   const handleSearch = () => {
-    navigateTo(`/search?q=${searchQuery.replace(/ /g, '+').toLowerCase()}`)
+    if(searchQuery.length > 0)
+      navigateTo(`/search?q=${searchQuery.replace(/ /g, '+').toLowerCase()}`)
   }
 
   const handleSearchChange = (event) => {
@@ -16,13 +17,12 @@ const SearchBar = ({ query }) => {
   };
 
   if(query !== '') {
-    console.log("Your serach prop: ", query);
     setSearchQuery(query);
   }
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      handleSearch();
+        handleSearch();
     }
   };
 
@@ -59,7 +59,7 @@ const SearchBar = ({ query }) => {
           value={searchQuery}
           onChange={handleSearchChange}
           onKeyDown={handleKeyPress}
-        />
+        />  
       </Box>
     </Container>
   );
