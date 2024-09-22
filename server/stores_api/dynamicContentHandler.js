@@ -2,7 +2,7 @@ const puppeteer = require('puppeteer');
 const cheerio = require('cheerio');
 
 module.exports = async function (url, limit) {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({headless: true, args: ['--no-sandbox']});
     const page = await browser.newPage();
 
     await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
