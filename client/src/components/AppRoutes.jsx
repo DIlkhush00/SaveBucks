@@ -10,7 +10,7 @@ const HomeBlock = () => {
         <Box sx={{ display: 'flex', justifyContent: 'center', textAlign: 'center', mt: 10 }}>
             <Typography variant="h4" gutterBottom>
                 <ReactTyped
-                    strings={["Be smart about buying"]}
+                    strings={["Buy smart, save more"]}
                     typeSpeed={50}
                     cursorChar="!"
                     showCursor={true}
