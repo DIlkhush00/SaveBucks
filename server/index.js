@@ -8,7 +8,7 @@ const app = express();
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
     cors: {
-        origin: "https://savebucks.co",
+        origin: ["https://dilkhush00.github.io/SaveBucks"],
         methods: ["GET", "POST"]
     }
 });
