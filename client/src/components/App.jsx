@@ -12,7 +12,7 @@ const App = () => {
         palette: {
             mode: darkMode ? 'dark' : 'light',
             primary: {
-                main: darkMode ? '#121212' : '#fffff', // Random dark mode color
+                main: darkMode ? '#121212' : '#fffff',
             },
         },
     });
