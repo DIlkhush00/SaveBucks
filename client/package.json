@@ -1,11 +1,10 @@
 {
   "name": "client",
   "private": true,
-  "homepage": "https://iamdilkhush.me/savebucks/",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predeploy": "npm run build",  
+    "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "dev": "vite",
     "build": "vite build",
