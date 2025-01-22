@@ -8,7 +8,7 @@ const app = express();
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
     cors: {
-        origin: ["https://dilkhush00.github.io"],
+        origin: ["http://localhost:3000"],
         methods: ["GET", "POST"]
     }
 });
@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
 app.use(cors({
-    origin: ["https://dilkhush00.github.io"],
+    origin: ["http://localhost:3000"],
     methods: ["GET", "POST"]
 }));
 
