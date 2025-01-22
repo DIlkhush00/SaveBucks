@@ -24,7 +24,7 @@ const AppRoutes = () => {
 
     return (
         <>
-            <Router>
+            <Router basename='/SaveBucks'>
                 <Routes>
                     <Route exact path="/" element={<HomeBlock />} />
                 </Routes>
