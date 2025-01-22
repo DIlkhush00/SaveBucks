@@ -3,6 +3,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Button } from '@mui/material';
+import PropTypes from 'prop-types';
 
 const Product = ({ product }) => {
     let prefixURL = 'https://www.google.com';
@@ -105,6 +106,17 @@ const Product = ({ product }) => {
             </Card>
         ) : null
     );
+};
+Product.propTypes = {
+    product: PropTypes.shape({
+        productURL: PropTypes.string,
+        productSecondaryURL: PropTypes.string,
+        valid: PropTypes.bool.isRequired,
+        thumbnail: PropTypes.string,
+        title: PropTypes.string.isRequired,
+        price: PropTypes.string,
+        source: PropTypes.string.isRequired
+    }).isRequired
 };
 
 export default Product;

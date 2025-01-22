@@ -3,6 +3,9 @@ const getInfo_gg = require('../stores_api/google');
 const getURL = require("../utils/getURL");
 const dynamicContentHandler = require('../stores_api/dynamicContentHandler');
 
+router.get("/", (req, res) => {
+    res.send("ok");
+})
 
 router.post("/products", async (req, res) => {
     const { item, clientId } = req.body;

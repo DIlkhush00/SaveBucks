@@ -8,7 +8,7 @@ const app = express();
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
     cors: {
-        origin: "https://savebucks.co",
+        origin: ["http://localhost:3000"],
         methods: ["GET", "POST"]
     }
 });
@@ -20,7 +20,10 @@ const bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-app.use(cors());
+app.use(cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST"]
+}));
 
 // Setup socket
 app.set('socketio', io);

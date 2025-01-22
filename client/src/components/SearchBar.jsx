@@ -1,6 +1,7 @@
-import { Typography, Container, Box, InputBase } from '@mui/material'
+import { Container, Box, InputBase } from '@mui/material'
 import { Search } from '@mui/icons-material'
 import { useState } from 'react'
+import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 
 const SearchBar = ({ query }) => {
@@ -63,6 +64,9 @@ const SearchBar = ({ query }) => {
       </Box>
     </Container>
   );
+};
+SearchBar.propTypes = {
+  query: PropTypes.string
 };
 
 export default SearchBar;

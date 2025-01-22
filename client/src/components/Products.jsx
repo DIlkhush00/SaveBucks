@@ -1,4 +1,5 @@
 import { Grid } from "@mui/material"
+import PropTypes from 'prop-types';
 import Product from "./Product"
 
 const Products = ({ productsData }) => {
@@ -19,5 +20,8 @@ const Products = ({ productsData }) => {
       </>
     )
 }
+Products.propTypes = {
+  productsData: PropTypes.array,
+};
 
 export default Products

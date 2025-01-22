@@ -12,7 +12,7 @@ const App = () => {
         palette: {
             mode: darkMode ? 'dark' : 'light',
             primary: {
-                main: darkMode ? '#121212' : '#fffff', // Random dark mode color
+                main: darkMode ? '#121212' : '#fffff',
             },
         },
     });
@@ -33,7 +33,7 @@ const App = () => {
                             display: 'flex',
                             justifyContent: 'space-between'
                         }}>
-                            <Button href='/' variant="h5" >
+                            <Button href='/SaveBucks' variant="h5" >
                                 SaveBucks
                             </Button>
                             <IconButton onClick={handleDarkModeToggle} color="inherit">
