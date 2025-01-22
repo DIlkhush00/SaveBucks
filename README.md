@@ -7,7 +7,7 @@
   <p align="center">
     Buy Smart, save more!
     <br />
-    <a href="https://github.com/DIlkhush00/SaveBucks">Website</a>
+    <a href="https://dilkhush00.github.io/SaveBucks/">Website</a>
     ·
     <a href="https://github.com/DIlkhush00/SaveBucks/issues">Issues</a>
   </p>
