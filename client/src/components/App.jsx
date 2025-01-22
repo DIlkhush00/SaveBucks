@@ -33,7 +33,7 @@ const App = () => {
                             display: 'flex',
                             justifyContent: 'space-between'
                         }}>
-                            <Button href='/Savebucks' variant="h5" >
+                            <Button href='/SaveBucks' variant="h5" >
                                 SaveBucks
                             </Button>
                             <IconButton onClick={handleDarkModeToggle} color="inherit">
