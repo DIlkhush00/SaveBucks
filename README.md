@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./public/logo.webp" alt="SaveBucks Logo" width=300>
+  <img src="./assets/logo.webp" alt="SaveBucks Logo" width=200>
   <h2 align="center">
     SaveBucks
   </h2>
